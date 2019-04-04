@@ -44,15 +44,19 @@ app.use(function errorHandler(error, req, res, next) {
     res.status(500).json(response)
   });
 
-app.get('/',(req,res)=>{
+app.get('/user',(req,res)=>{
   
   res.json(users)
 });
 
 app.delete('/user/:userId', (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
-  res.send('Got it.');
+  const index = users.findIndex(u=>u.id===userId)
+  if(index===-1){
+    return res.status(404).send('User not found')
+  }
+  users.splice(index,1);
+  res.status(204).end();
 });
 
 app.post('/register',(req,res)=>{
